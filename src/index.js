@@ -11,6 +11,7 @@ import RideStatus from './pages/RideStatus';
 import MyRequests from './pages/MyRequests';
 import Profile from './pages/Profile';
 import Payments from './pages/Payments';
+import LiveTracking from './pages/liveTracking/liveTracking';
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
@@ -20,6 +21,11 @@ const routing = (
       <Routes>
         <Route path="/" component={App} element={<App />} exact />
         <Route path="/signup" component={Signup} element={<Signup />} />
+        <Route
+          path="/live/track"
+          component={LiveTracking}
+          element={<LiveTracking />}
+        />
 
         <Route path="/user/login" component={Login} element={<Login />} />
         <Route
@@ -47,11 +53,7 @@ const routing = (
           component={RideStatus}
           element={<RideStatus />}
         />
-        <Route
-          path="/user/profile"
-          component={Profile}
-          element={<Profile />}
-        />
+        <Route path="/user/profile" component={Profile} element={<Profile />} />
         <Route
           path="/user/payments"
           component={Payments}
