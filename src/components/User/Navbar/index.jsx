@@ -31,7 +31,7 @@ if(x){
 }
 
 export default function Navbar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();  
 
 
   
@@ -72,7 +72,7 @@ export default function Navbar() {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              <Link href="/user/dashboard/">My Rides</Link>
+              {/* <Link href="/user/dashboard/">My Rides</Link> */}
               <Link href="/user/dashboard/search">Search Rides</Link>
               <Link href="/user/dashboard/myrequests">Requests Status</Link>
             </HStack>
@@ -104,12 +104,10 @@ export default function Navbar() {
                 />
               </MenuButton>
               <MenuList>
-                <Text p={'1rem'} fontWeight={'bold'}>
+                {/* <Text p={'1rem'} fontWeight={'bold'}>
                   {name}
-                </Text>
-                <MenuItem onClick={myprofile}>My Profile</MenuItem>
-                <MenuItem onClick={pymnts}>Payments</MenuItem>
-                <MenuDivider />
+                </Text> */}
+ 
                 <MenuItem onClick={logout}>Log Out</MenuItem>
               </MenuList>
             </Menu>
@@ -119,7 +117,7 @@ export default function Navbar() {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4} p={'1rem'}>
-              <Link href="/user/dashboard/">My Rides</Link>
+              {/* <Link href="/user/dashboard/">My Rides</Link> */}
               <Link href="/user/dashboard/search">Search Rides</Link>
               <Link href="/user/dashboard/myrequests">Requests Status</Link>
             </Stack>
