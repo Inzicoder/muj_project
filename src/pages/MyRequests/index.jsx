@@ -7,10 +7,9 @@ import LoadingCard from '../../components/layouts/LoadingCard';
 
 const MyRequestRides = () => {
   const [myRequests, setMyRequests] = useState([]);
-  const [noRequest, setNoRequests] = useState(null);
+  const [noRequest, setNoRequests] = useState(false);
   const UID = parseInt(localStorage.getItem('UID'));
   const [loading, setLoad] = useState(false);
-  console.log(UID, 'UID');
 
   useEffect(() => {
     fetchRideData();
@@ -38,8 +37,6 @@ const MyRequestRides = () => {
       });
   };
 
-
-
   return (
     <ChakraProvider theme={theme}>
       <Navbar />
@@ -60,22 +57,57 @@ const MyRequestRides = () => {
             />
           ))}
           {myRequests.length === 0 ? (
-            <p>You have not requested for any rides.</p>
+          <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          height="100vh"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1609743522653-52354461eb27?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bm90JTIwZm91bmR8ZW58MHx8MHx8fDA%3D"
+            alt="Nothing"
+            style={{
+              height: '300px',
+            }}
+          />
+          <span
+            style={{
+              marginTop: '10px',
+              color: 'red',
+              fontSize: '2xl',
+            }}
+          >
+            No rides found for you
+          </span>
+        </Box>
           ) : null}
         </Box>
       ) : (
-        <span
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '200px',
-            color: 'red',
-          }}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          height="100vh"
         >
-          {' '}
-          No rides found for you {UID}.
-        </span>
+          <img
+            src="https://images.unsplash.com/photo-1609743522653-52354461eb27?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bm90JTIwZm91bmR8ZW58MHx8MHx8fDA%3D"
+            alt="Nothing"
+            style={{
+              height: '300px',
+            }}
+          />
+          <span
+            style={{
+              marginTop: '10px',
+              color: 'red',
+              fontSize: '2xl',
+            }}
+          >
+            No rides found for you
+          </span>
+        </Box>
       )}
 
       <br />
@@ -88,3 +120,5 @@ const MyRequestRides = () => {
 };
 
 export default MyRequestRides;
+
+

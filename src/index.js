@@ -22,7 +22,7 @@ const routing = (
         <Route path="/" component={App} element={<App />} exact />
         <Route path="/signup" component={Signup} element={<Signup />} />
         <Route
-          path="/live/track"
+         path="/live/track/:fromLat/:fromLng/:toLat/:toLng"
           component={LiveTracking}
           element={<LiveTracking />}
         />

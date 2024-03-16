@@ -32,6 +32,10 @@ if(x){
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+
+  
+
   const navigate = useNavigate();
 
   const publishRide = () => {

@@ -143,7 +143,7 @@ const RidesSearch = () => {
                   Search Ride
                 </Button>
               </Stack>
-              <Text fontSize={'lg'} color={'gray.600'} color='red'>
+              <Text fontSize={'lg'}  color='red'>
             {msg}
           </Text>
             </form>

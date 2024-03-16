@@ -6,16 +6,18 @@ import {
   InfoWindow,
   Polyline,
 } from 'google-maps-react';
+import { useParams } from 'react-router-dom';
 
 const LiveTracking = props => {
   const { google } = props;
+  const { fromLat, fromLng , toLat , toLng} = useParams();
   const [initialCenterAddress, setInitialCenterAddress] = useState({
-    lat: 12.9151174,
-    lng: 77.6338816,
+    lat:fromLat,
+    lng: fromLng,
   });
   const [destinationAddress, setDestinationAddress] = useState({
-    lat: 12.9047903,
-    lng: 77.6279679,
+    lat: toLat,
+    lng:toLng,
   });
   const [activeMarker, setActiveMarker] = useState(null);
   const [showInfoWindow, setShowInfoWindow] = useState(false);

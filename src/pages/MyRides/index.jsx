@@ -36,7 +36,7 @@ const MyRides = () => {
       <LoadingCard/>
       :null}
 
-      {allRides.map(res => {
+      {allRides?.map(res => {
         return (
           <MyRide
           UID={parseInt(localStorage.getItem('UID'))}
