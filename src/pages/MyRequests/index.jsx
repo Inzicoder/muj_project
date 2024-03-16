@@ -7,50 +7,77 @@ import LoadingCard from '../../components/layouts/LoadingCard';
 
 const MyRequestRides = () => {
   const [myRequests, setMyRequests] = useState([]);
+  const [noRequest, setNoRequests] = useState(null);
   const UID = parseInt(localStorage.getItem('UID'));
   const [loading, setLoad] = useState(false);
+  console.log(UID, 'UID');
 
   useEffect(() => {
-    try {
-      setLoad(true);
-      axios
-        .get(
-          `https://muj-travel-buddy.onrender.com/requests?requestee_id=${UID}`
-        )
-        .then(response => {
-          setLoad(false);
-          setMyRequests(response.data);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    fetchRideData();
   }, []);
+
+  const fetchRideData = async () => {
+    setLoad(true);
+    await axios
+      .get(`https://muj-backend.onrender.com/user/show/${UID}`)
+      .then(response => {
+        console.log(response.data, 'response of rides');
+        setLoad(false);
+        if (response.data.success) {
+          setMyRequests(response?.data?.rides);
+        } else {
+          setMyRequests([]);
+        }
+      })
+      .catch(error => {
+        console.log(error, 'error in fetching data ');
+        setNoRequests(true);
+        if (error.response.data) {
+          console.log(error.response.data, 'erorr');
+        }
+      });
+  };
+
+
 
   return (
     <ChakraProvider theme={theme}>
       <Navbar />
 
-      <Box align={'center'}>
-        <Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
-          My Requests Status
-        </Text>
-        {(loading===true)?
-      <LoadingCard/>
-      :null}
-        {myRequests.map(res => (
-          <RideCard
-            key={`${res.ride_id}-${res.publisher_id}`}
-            uid={parseInt(localStorage.getItem('UID'))}
-            rideID={res.ride_id}
-            pid={res.publisher_id}
-            requestStatus={res.request_status}
-          />
-        ))}
-        {
-          (myRequests.length===0)?
-        <p>You have not requested for any rides.</p>:null
-        }
-      </Box>
+      {!noRequest ? (
+        <Box align={'center'}>
+          <Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
+            My Requests Status
+          </Text>
+          {loading === true ? <LoadingCard /> : null}
+          {myRequests?.map(res => (
+            <RideCard
+              key={`${res._id}-${res.PublisherID}`}
+              uid={parseInt(localStorage.getItem('UID'))}
+              rideID={res._id}
+              pid={res.PublisherID}
+              // requestStatus={res.request_status}
+            />
+          ))}
+          {myRequests.length === 0 ? (
+            <p>You have not requested for any rides.</p>
+          ) : null}
+        </Box>
+      ) : (
+        <span
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '200px',
+            color: 'red',
+          }}
+        >
+          {' '}
+          No rides found for you {UID}.
+        </span>
+      )}
+
       <br />
       <br />
       <br />

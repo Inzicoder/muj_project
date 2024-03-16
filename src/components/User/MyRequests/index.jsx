@@ -12,6 +12,7 @@ const RideCard = props => {
   const [rideDetails, setRideDetails] = useState({});
   const [publisher, setPublisher] = useState({});
 
+
   const statusColors = {
     pending: 'orange.200',
     accepted: 'green.200',
@@ -25,6 +26,7 @@ const RideCard = props => {
           `https://muj-travel-buddy.onrender.com/rides/${rideID}`
         )
         .then(response => {
+          console.log(response,'response')
           setRideDetails(response.data);
           setPublisher(response.data.publisher);
         });
@@ -66,7 +68,7 @@ const RideCard = props => {
             borderRadius={'50px'}
           >
             <Text fontWeight={600} fontSize={'2xl'}>
-              {requestStatus.toUpperCase()}
+              {/* {requestStatus.toUpperCase()} */}
             </Text>
           </Box>
 

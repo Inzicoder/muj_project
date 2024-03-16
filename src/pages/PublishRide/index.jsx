@@ -33,6 +33,14 @@ export default function PublishRide() {
   const handleNopChange = e => setNop(e.target.value);
   const handleDojChange = e => setDoj(e.target.value);
   const handlePriceChange = e => setPrice(e.target.value);
+  // {
+  //   "PublisherID": "123456", // Publisher UID (string)
+  //   "from": "New York",      // Starting location (string)
+  //   "to": "Los Angeles",     // Destination (string)
+  //   "no_of_pass": 3,         // Number of passengers (integer)
+  //   "doj": "2024-03-15",     // Date of journey (string, format: YYYY-MM-DD)
+  //   "price": 50              // Price of the ride (number)
+  // }
 
   useEffect(() => {
     try {
@@ -61,13 +69,21 @@ export default function PublishRide() {
   };
   const handleSubmit = async event => {
     event.preventDefault();
-    console.log(from,to)
+
+    const formData ={
+      PublisherID:"123456",
+      from:from,
+      to:to,
+      doj:doj,
+      no_of_pass :nop,
+      price: price
+    }
     try {
-      let dat = await axios.get(
-        `https://muj-backend.onrender.com/rides/${from}/${to}`,
+      let dat = await axios.post(
+        `https://muj-backend.onrender.com/add/ride`,
+        formData
       );
-      console.log(dat,'dat')
-      if (dat.status == 200) {
+      if (dat.data.success) {
         setmsg('Ride Successfully placed');
         setTimeout(navigato_UDB(), 800);
       } else {
@@ -76,6 +92,7 @@ export default function PublishRide() {
       }
     } catch (error) {
       console.log(error,'error in publish ride');
+      setmsg(error?.message)
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -88,7 +105,7 @@ export default function PublishRide() {
       } else {
         // Something happened in setting up the request that triggered an error
         console.error('Error setting up request:', error.message);
-        setmsg(error.message)
+      
       }
     }
   };

@@ -11,27 +11,28 @@ const UserDashBoard = () => {
     const user = jwt(x);
     setUID(user.UID);
 
-    try {
-      fetch('/user/dashboard/', {
-        method: 'GET',
-        headers: {
-          token: x,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      }).then(response => {
-        response.json().then(response => {
-          setUID(response.EID);
-        });
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   fetch('/user/dashboard/', {
+    //     method: 'GET',
+    //     headers: {
+    //       token: x,
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json',
+    //     },
+    //     credentials: 'include',
+    //   }).then(response => {
+    //     response.json().then(response => {
+    //       setUID(response.EID);
+    //     });
+    //   });
+    // } catch (err) {
+    //   console.log(err,"error in dashboard");
+    // }
   }, []);
   return (
     <div>
-      <MyRides uid={S_UID} />
+      {/* <MyRides uid={S_UID} /> */}
+      <h2>hi</h2>
     </div>
   );
 };

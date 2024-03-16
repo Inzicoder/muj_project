@@ -7,27 +7,28 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const RideCard = props => {
+  console.log(props,'props')
   const from = props.from;
   const to = props.to;
   const doj = props.doj;
   const price = props.price;
   const nop = props.nop;
-  const rideID = props.rideID;
+  const rideID = props?.rideID;
   const pid = props.pid;
   const uid = props.uid;
   const publisherDetail = props.publisher;
   const [msg, setMsg] = useState('Request Ride');
 
   const requestRide = async () => {
-    try {
-      const d = await axios.post(
-        `https://muj-travel-buddy.onrender.com/users/${uid}/requests`,
-        { publisher_id: pid, ride_id: rideID }
-      );
-      setMsg('Ride Requested');
-    } catch (err) {
-      alert(`Error: ${err}`);
-    }
+    // try {
+    //   const d = await axios.post(
+    //     `https://muj-travel-buddy.onrender.com/users/${uid}/requests`,
+    //     { publisher_id: pid, ride_id: rideID }
+    //   );
+    //   setMsg('Ride Requested');
+    // } catch (err) {
+    //   alert(`Error: ${err}`);
+    // }
   };
 
   return (

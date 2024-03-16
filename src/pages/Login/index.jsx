@@ -45,11 +45,12 @@ export default function Login() {
 
       setToken(dat.data.token);
       if (dat.status === 200) {
+        localStorage.setItem('UID', UID);
         setmsg('SUCCEFULL SIGNIN !');
         setStatus('Signin successful');
       localStorage.setItem('UID', UID);
         setTimeout(() => {
-          navigate('/user/dashboard');
+          navigate('/user/dashboard/publish');
         }, 1000);
       } else {
         setStatus('Please Try Again');

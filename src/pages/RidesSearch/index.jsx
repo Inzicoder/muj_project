@@ -33,29 +33,45 @@ const RidesSearch = () => {
   const handlePriceChange = e => setPrice(e.target.value);
   const handleSubmit = async event => {
     event.preventDefault();
-    try {
-      setLoad(true);
-      let dat = await axios.get(
-        `https://muj-travel-buddy.onrender.com/rides/`,
-        {
-          params: {
-            from_location: from,
-            to_location: to,
-            doj: doj,
-            price: price,
-          },
-        }
-      );
-      setAllRides(dat.data);
-      if (dat.status === 200) {
-        setLoad(false);
+    // try {
+    
+    //   console.log(from,to,price)
+    //   let dat = await axios.get(
+    //     `https://muj-backend.onrender.com/rides/${from}/${to}/${price}`,
+       
+    //   );
+    //   console.log(dat.data,"dataHere");
+    //   setAllRides(dat.data.rides);
+    //   if (dat.status === 200) {
+    //     setLoad(false);
+    //     setmsg('Scroll to view rides');
+    //   } else {
+    //     setmsg("Couldn't find rides");
+    //   }
+    // } catch (err) {
+    //   console.log(err,"error in search ride");
+    // }
+    setLoad(true);
+     await axios.get(
+      `https://muj-backend.onrender.com/rides/${from}/${to}/${price}`,
+    ).then(response=>{
+      console.log(response,'response of search')
+      setLoad(false);
+      if (response.data.success) {
         setmsg('Scroll to view rides');
-      } else {
+      }
+      else{
         setmsg("Couldn't find rides");
       }
-    } catch (err) {
-      console.log(err);
-    }
+   
+    }).catch(error=>{
+      setLoad(false);
+      console.log(error,'error')
+      if (error?.response?.data) {
+        console.log(error.response.data)
+        setmsg(error.response.data.message);
+      }
+    })
   };
 
   return (
@@ -64,9 +80,7 @@ const RidesSearch = () => {
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={2} px={6}>
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}> Search Rides</Heading>
-          <Text fontSize={'lg'} color={'gray.600'}>
-            {msg}
-          </Text>
+       
         </Stack>
         <Box
           rounded={'lg'}
@@ -129,6 +143,9 @@ const RidesSearch = () => {
                   Search Ride
                 </Button>
               </Stack>
+              <Text fontSize={'lg'} color={'gray.600'} color='red'>
+            {msg}
+          </Text>
             </form>
             <Stack spacing={10}></Stack>
           </Stack>
@@ -141,16 +158,16 @@ const RidesSearch = () => {
         {allRides.map(res =>
           res.publisher_id !== parseInt(localStorage.getItem('UID')) ? (
             <RideCard
-              key={res.id}
+              key={res._id}
               uid={parseInt(localStorage.getItem('UID'))}
-              to={res.to_location}
-              from={res.from_location}
+              to={res.to}
+              from={res.from}
               doj={res.doj}
-              nop={res.passenger_count}
+              nop={res.no_of_pass}
               price={res.price}
-              rideID={res.id}
-              pid={res.publisher_id}
-              publisher={res.publisher}
+              rideID={res._id}
+              // pid={res.publisher_id}
+              publisher={res.PublisherID}
             />
           ) : null
         )}
