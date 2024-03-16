@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Map,
-  GoogleApiWrapper,
-  Marker,
-  InfoWindow,
-  Polyline,
-} from 'google-maps-react';
+import { GoogleApiWrapper, Map, Marker, InfoWindow } from 'google-maps-react';
 import { useParams } from 'react-router-dom';
 
 const LiveTracking = props => {
   const { google } = props;
-  const { fromLat, fromLng , toLat , toLng} = useParams();
+  const { fromLat, fromLng, toLat, toLng } = useParams();
   const [initialCenterAddress, setInitialCenterAddress] = useState({
-    lat:fromLat,
-    lng: fromLng,
+    lat: parseFloat(fromLat),
+    lng: parseFloat(fromLng),
   });
   const [destinationAddress, setDestinationAddress] = useState({
-    lat: toLat,
-    lng:toLng,
+    lat: parseFloat(toLat),
+    lng: parseFloat(toLng),
   });
   const [activeMarker, setActiveMarker] = useState(null);
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [mapBounds, setMapBounds] = useState(null);
   const [map, setMap] = useState(null);
+  const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
   useEffect(() => {
     const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer({
+      suppressMarkers: true,
+    });
+
+    setDirectionsRenderer(directionsRenderer);
+
     directionsService.route(
       {
         origin: initialCenterAddress,
@@ -40,6 +41,7 @@ const LiveTracking = props => {
           const bounds = new google.maps.LatLngBounds();
           route.forEach(point => bounds.extend(point));
           setMapBounds(bounds);
+          directionsRenderer.setDirections(result);
         } else {
           console.error(`Error fetching directions: ${status}`);
         }
@@ -57,57 +59,35 @@ const LiveTracking = props => {
   };
 
   const handleMapReady = (mapProps, map) => {
-    setMap(map);
+    if (map) {
+      setMap(map);
+      directionsRenderer.setMap(map);
+    }
   };
 
-  useEffect(() => {
-    if (map) {
-      const trafficLayer = new google.maps.TrafficLayer();
-      trafficLayer.setMap(map);
-    }
-  }, [map, google]);
-
   return (
-      <Map
-        google={google}
-        zoom={15}
-        center={mapBounds && mapBounds.getCenter()}
-        initialCenter={initialCenterAddress}
-        fullscreenControl={false}
-        mapTypeControl={false}
-        onReady={handleMapReady}
+    <Map
+      google={google}
+      zoom={11}
+      center={mapBounds && mapBounds.getCenter()}
+      initialCenter={initialCenterAddress}
+      fullscreenControl={false}
+      mapTypeControl={false}
+      onReady={handleMapReady}
+    >
+      <Marker position={initialCenterAddress} onClick={onMarkerClick} />
+      <Marker position={destinationAddress} onClick={onMarkerClick} />
+      <InfoWindow
+        marker={activeMarker}
+        visible={showInfoWindow}
+        onClose={onCloseInfoWindow}
       >
-        <Marker position={initialCenterAddress} onClick={onMarkerClick} />
-        <Marker position={destinationAddress} onClick={onMarkerClick} />
-        <InfoWindow
-          marker={activeMarker}
-          visible={showInfoWindow}
-          onClose={onCloseInfoWindow}
-        >
-          <div>
-            <h3>Marker Info</h3>
-            <p>Additional information about the marker</p>
-          </div>
-        </InfoWindow>
-        {routeCoordinates.length > 0 && (
-          <Polyline
-            path={routeCoordinates}
-            strokeColor="#0080ff" // Blue color
-            strokeOpacity={0.7}
-            strokeWeight={6} // Thicker line
-            icons={[
-              {
-                icon: {
-                  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                  scale: 2, // Size of the arrow
-                },
-                offset: '50%', // Show the arrow at the middle of the line
-                repeat: '100px', // Repeat the arrow every 100 pixels
-              },
-            ]}
-          />
-        )}
-      </Map>
+        <div>
+          <h3>Marker Info</h3>
+          <p>Additional information about the marker</p>
+        </div>
+      </InfoWindow>
+    </Map>
   );
 };
 
