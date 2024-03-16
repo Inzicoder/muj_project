@@ -59,7 +59,7 @@ const LiveTracking = props => {
   };
 
   const handleMapReady = (mapProps, map) => {
-    if (map) {
+    if (map && typeof setMap === 'function') {
       setMap(map);
       directionsRenderer.setMap(map);
     }
