@@ -43,12 +43,14 @@ export default function Login() {
         password,
       });
 
+      console.log(dat.data,'loginresponse')
       setToken(dat.data.token);
       if (dat.status === 200) {
-        localStorage.setItem('UID', UID);
-        setmsg('SUCCEFULL SIGNIN !');
+  
+        setmsg('SUCCESSFULL SIGNIN !');
         setStatus('Signin successful');
       localStorage.setItem('UID', UID);
+      localStorage.setItem('userRole', dat.data?.user?.user_type);
         setTimeout(() => {
           navigate('/user/dashboard/publish');
         }, 1000);
@@ -77,9 +79,9 @@ export default function Login() {
           <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
             <Stack align={'center'}>
               <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-              <Text fontSize={'lg'} color={'gray.600'}>
+              {/* <Text fontSize={'lg'} color={'gray.600'}>
                 User Login
-              </Text>
+              </Text> */}
               <Text>{msg}</Text>
             </Stack>
             <Box
@@ -116,8 +118,8 @@ export default function Login() {
                       align={'start'}
                       justify={'space-between'}
                     >
-                      <Checkbox>Remember me</Checkbox>
-                      <Link color={'orange.400'}>Forgot password?</Link>
+                      {/* <Checkbox>Remember me</Checkbox>
+                      <Link color={'orange.400'}>Forgot password?</Link> */}
                     </Stack>
                     <Button
                       bg={'orange.400'}

@@ -44,8 +44,7 @@ function PublishRide() {
 
   const handleFromChange = e => {
     setFrom(e.target.value);
-    const value = e.target.value;
-    // setFormData({ ...formData, "dropLocation": location.description });
+    const value = e.target.value
 
     if (service) {
       service.getPlacePredictions({ input: value }, results => {
@@ -86,8 +85,6 @@ function PublishRide() {
   };
 
   const destLocationHandler = location => {
-    console.log(location, 'location');
-
     setTo(location.description);
     const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode(
@@ -258,6 +255,13 @@ function PublishRide() {
                     )}
 
                     <FormLabel>To</FormLabel>
+                    <Input
+                      value={to}
+                      placeholder={'Enter a drop point'}
+                      id="to"
+                      type="text"
+                      onChange={handleToChange}
+                    />
 
                     {destPredictions.length > 0 && (
                       <Box
@@ -301,13 +305,7 @@ function PublishRide() {
                       </Box>
                     )}
 
-                    <Input
-                      value={to}
-                      placeholder={'Enter a drop point'}
-                      id="to"
-                      type="text"
-                      onChange={handleToChange}
-                    />
+              
 
                     <FormLabel>Date of Journey</FormLabel>
                     <Input
