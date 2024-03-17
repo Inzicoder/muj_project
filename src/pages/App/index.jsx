@@ -12,6 +12,8 @@ import {
 } from '@chakra-ui/react';
 import FadeInUp from '../../components/Animation/FadeInUp';
 import Footer from '../../components/layouts/Footer';
+import muj_image from '../../assets/muj_img.jpeg';
+
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -41,9 +43,9 @@ function App() {
                 </Text>{' '}
               </Heading>
               <Text fontSize={{ base: 'md', lg: 'lg' }} color={'gray.500'}>
-                This platform is an exclusive resource for the people of MUJ. 
-                It provides an easy and accessible way to pool vehicles and get
-                co-passengers for the go.
+                This platform is an exclusive resource for the people of
+                college. It provides an easy and accessible way to pool vehicles
+                and get co-passengers for the go.
               </Text>
               <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
                 <Link href="/user/login">
@@ -64,22 +66,16 @@ function App() {
               </Stack>
             </Stack>
           </Flex>
-          <Flex flex={1}>
+          <Flex flex={0.9}>
             <Image
-              alt={'MUJ-IMAGE'}
-              objectFit={'cover'}
-//               h="100vh"
-              // w="50vw"
-            h={['70vh', '80vh', '100vh', '100vh']}
-            width={[
-              '100vw', // 0-30em
-              '100vw', // 30em-48em
-              '50vw', // 48em-62em
-              '50vw', // 62em+
-            ]}
-              src={
-                "https://mujslcm.jaipur.manipal.edu:122/keen/themes/keen/theme/demo1/dist/assets/media/misc/bg_1.jpg"
-              }
+              alt="MUJ-IMAGE"
+              objectFit="cover"
+              src={muj_image}
+              style={{
+                height:'400px',
+                width:'400px'
+              }}
+           
             />
           </Flex>
         </Stack>
