@@ -4,6 +4,7 @@ import Navbar from '../../components/User/Navbar';
 import { Box, Text, ChakraProvider, theme } from '@chakra-ui/react';
 import RideCard from '../../components/User/MyRequests';
 import LoadingCard from '../../components/layouts/LoadingCard';
+import FadeInUp from '../../components/Animation/FadeInUp';
 
 const MyRequestRides = () => {
   const [myRequests, setMyRequests] = useState([]);
@@ -20,7 +21,7 @@ const MyRequestRides = () => {
     await axios
       .get(`https://muj-backend.onrender.com/user/show/${UID}`)
       .then(response => {
-        console.log(response.data, 'response of rides');
+        console.log(response.data.rides, 'response of rides');
         setLoad(false);
         if (response.data.success) {
           setMyRequests(response?.data?.rides);
@@ -37,9 +38,17 @@ const MyRequestRides = () => {
       });
   };
 
+
+
   return (
     <ChakraProvider theme={theme}>
       <Navbar />
+      
+    
+    
+      <FadeInUp>
+
+
 
       {!noRequest ? (
         <Box align={'center'}>
@@ -53,8 +62,14 @@ const MyRequestRides = () => {
               uid={parseInt(localStorage.getItem('UID'))}
               rideID={res._id}
               pid={res.PublisherID}
+              doj={res.doj}
+              price={res.price}
+              nop={res.no_of_pass}
+              from={res.from}
+              to ={res.to}
               // requestStatus={res.request_status}
             />
+ 
           ))}
           {myRequests.length === 0 ? (
           <Box
@@ -98,6 +113,7 @@ const MyRequestRides = () => {
               height: '300px',
             }}
           />
+       
           <span
             style={{
               marginTop: '10px',
@@ -110,11 +126,10 @@ const MyRequestRides = () => {
         </Box>
       )}
 
+ 
       <br />
       <br />
-      <br />
-      <br />
-      <br />
+      </FadeInUp>
     </ChakraProvider>
   );
 };

@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import FadeInUp from '../../components/Animation/FadeInUp';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,6 +27,9 @@ export default function Login() {
   const [msg, setmsg] = useState('Please fill in your credentials');
   const [token, setToken] = useState('');
   const [status, setStatus] = useState('Sign in');
+  const [showMsg, setShowMsg] = useState(false);
+  const [showPswd, setShowPswd] = useState(false);
+
   const handleUIDChange = e => setUID(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
 
@@ -35,34 +39,38 @@ export default function Login() {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    console.log(UID,password)
 
     try {
-      let dat = await axios.post('https://muj-backend.onrender.com/user/login', {
-        UID: UID,
-        password,
-      });
+      let dat = await axios.post(
+        'https://muj-backend.onrender.com/user/login',
+        {
+          UID: UID,
+          password,
+        }
+      );
 
-      console.log(dat.data,'loginresponse')
+      console.log(dat.data, 'loginresponse');
       setToken(dat.data.token);
       if (dat.status === 200) {
-  
+        setShowMsg(true);
         setmsg('SUCCESSFULL SIGNIN !');
         setStatus('Signin successful');
-      localStorage.setItem('UID', UID);
-      localStorage.setItem('userRole', dat.data?.user?.user_type);
+        localStorage.setItem('UID', UID);
+        localStorage.setItem('userRole', dat.data?.user?.user_type);
         setTimeout(() => {
           navigate('/user/dashboard/publish');
         }, 1000);
       } else {
         setStatus('Please Try Again');
         setmsg('INCORRECT CREDENTIALS');
+        setShowMsg(true);
       }
     } catch (error) {
       setStatus('Please Try Again');
       setTimeout(() => {
         setStatus('Sign in');
         setmsg('Please fill in your credentials');
+        setShowMsg(true);
       }, 3000);
       console.log(error);
     }
@@ -78,11 +86,30 @@ export default function Login() {
         >
           <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
             <Stack align={'center'}>
+              <Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}>
+                {/* <Text
+                  as={'span'}
+                  position={'relative'}
+                  _after={{
+                    content: "''",
+                    width: 'full',
+                    position: 'absolute',
+                    bottom: 1,
+                    left: 0,
+                    bg: 'blue.400',
+                    zIndex: -1,
+                  }}
+                >
+                  Manipal University Jaipur
+                </Text> */}
+                <br />{' '}
+                <Text color={'orange.400'} as={'span'}>
+                  Travel Buddy
+                </Text>{' '}
+              </Heading>
               <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-              {/* <Text fontSize={'lg'} color={'gray.600'}>
-                User Login
-              </Text> */}
-              <Text>{msg}</Text>
+
+              {showMsg && <Text>{msg}</Text>}
             </Stack>
             <Box
               rounded={'lg'}
@@ -104,6 +131,7 @@ export default function Login() {
                   </FormControl>
                   <FormControl id="password">
                     <FormLabel>Password</FormLabel>
+                    {/* {showPswd ? <ViewIcon /> : <ViewOffIcon />} */}
                     <Input
                       placeholder={'Password'}
                       type="password"

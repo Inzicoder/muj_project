@@ -174,109 +174,122 @@ const RidesSearch = () => {
           <Stack spacing={4}>
             <form onSubmit={handleSubmit}>
               <FormControl id="publish_ride">
-                <HStack>
+         
                   <FormLabel>From</FormLabel>
                   <Input
+                  value={from}
                     placeholder={'Enter a pick-up point'}
                     id="from"
                     type="text"
                     value={from}
                     onChange={handleFromChange}
                   />
-                  {dropPredictions.length > 0 && (
-                    <Box
-                      as="ul"
-                      pos="absolute"
-                      mt="2"
-                      w="full"
-                      maxW="26rem"
-                      bg="white"
-                      border="1px"
-                      borderColor="gray.300"
-                      rounded="lg"
-                      shadow="lg"
-                      divideY="1px"
-                      divideColor="gray.300"
-                    >
-                      <List>
-                        {dropPredictions.map(prediction => (
-                          <ListItem
-                            key={prediction.place_id}
-                            px="4"
-                            py="2"
-                            _hover={{
-                              bg: 'gray.100',
-                              cursor: 'pointer',
-                              transition: 'background-color 0.3s ease-in-out',
-                            }}
-                            onClick={() => dropLocationHandler(prediction)}
-                            display="flex"
-                            alignItems="center"
-                            borderBottom="1px"
-                            borderBottomColor="gray.200"
-                            zIndex={99}
-                          >
-                            <Text color="gray.800" isTruncated>
-                              {prediction.description}
-                            </Text>
-                          </ListItem>
-                        ))}
-                      </List>
-                    </Box>
-                  )}
+                {dropPredictions.length > 0 && (
+                      <Box
+                        position="relative"
+                        zIndex={1} // Ensure that this dropdown is above the other
+                      >
+                 
+                        <Box
+                          as="ul"
+                          pos="absolute"
+                          mt="2"
+                          w="full"
+                          maxW="26rem"
+                          bg="white"
+                          border="1px"
+                          borderColor="gray.300"
+                          rounded="lg"
+                          shadow="lg"
+                          divideY="1px"
+                          divideColor="gray.300"
+                        >
+                          <List>
+                            {dropPredictions.map(prediction => (
+                              <ListItem
+                                key={prediction.place_id}
+                                px="4"
+                                py="2"
+                                _hover={{
+                                  bg: 'gray.100',
+                                  cursor: 'pointer',
+                                  transition:
+                                    'background-color 0.3s ease-in-out',
+                                }}
+                                onClick={() => dropLocationHandler(prediction)}
+                                display="flex"
+                                alignItems="center"
+                                borderBottom="1px"
+                                borderBottomColor="gray.200"
+                              >
+                                <Text color="gray.800" isTruncated>
+                                  {prediction.description}
+                                </Text>
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Box>
+                      </Box>
+                    )}
 
                   <FormLabel>To</FormLabel>
                   <Input
+                  value={to}
                     placeholder={'Enter a drop point'}
                     id="to"
                     type="text"
                     onChange={handleToChange}
                   />
 
-                  {destPredictions.length > 0 && (
-                    <Box
-                      as="ul"
-                      pos="absolute"
-                      mt="2"
-                      w="full"
-                      maxW="26rem"
-                      bg="white"
-                      border="1px"
-                      borderColor="gray.300"
-                      rounded="lg"
-                      shadow="lg"
-                      divideY="1px"
-                      divideColor="gray.300"
-                    >
-                      <List>
-                        {destPredictions.map(prediction => (
-                          <ListItem
-                            key={prediction.place_id}
-                            px="4"
-                            py="2"
-                            _hover={{
-                              bg: 'gray.100',
-                              cursor: 'pointer',
-                              transition: 'background-color 0.3s ease-in-out',
-                            }}
-                            onClick={() => destLocationHandler(prediction)}
-                            display="flex"
-                            alignItems="center"
-                            borderBottom="1px"
-                            borderBottomColor="gray.200"
-                            zIndex={99}
-                          >
-                            <Text color="gray.800" isTruncated>
-                              {prediction.description}
-                            </Text>
-                          </ListItem>
-                        ))}
-                      </List>
-                    </Box>
-                  )}
-                </HStack>
+{destPredictions.length > 0 && (
+                      <Box
+                        position="relative"
+                        zIndex={1} 
+                      >
+                        <Box
+                          as="ul"
+                          pos="absolute"
+                          mt="2"
+                          w="full"
+                          maxW="26rem"
+                          bg="white"
+                          border="1px"
+                          borderColor="gray.300"
+                          rounded="lg"
+                          shadow="lg"
+                          divideY="1px"
+                          divideColor="gray.300"
+                        >
+                          <List>
+                            {destPredictions.map(prediction => (
+                              <ListItem
+                                key={prediction.place_id}
+                                px="4"
+                                py="2"
+                                _hover={{
+                                  bg: 'gray.100',
+                                  cursor: 'pointer',
+                                  transition:
+                                    'background-color 0.3s ease-in-out',
+                                }}
+                                onClick={() => destLocationHandler(prediction)}
+                                display="flex"
+                                alignItems="center"
+                                borderBottom="1px"
+                                borderBottomColor="gray.200"
+                              >
+                                <Text color="gray.800" isTruncated>
+                                  {prediction.description}
+                                </Text>
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Box>
+                      </Box>
+                    )}
+    
                 <br />
-                <HStack>
+    
                   <FormLabel>Date of Journey</FormLabel>
                   <Input
                     placeholder={'Date of Journey'}
@@ -284,9 +297,9 @@ const RidesSearch = () => {
                     type="date"
                     onChange={handleDojChange}
                   />
-                </HStack>
+             
                 <br />
-                <HStack>
+
                   <FormLabel>Price per head</FormLabel>
                   <Input
                     placeholder={'Price per head'}
@@ -294,7 +307,7 @@ const RidesSearch = () => {
                     type="text"
                     onChange={handlePriceChange}
                   />
-                </HStack>
+     
               </FormControl>
               <br />
               <Stack spacing={10}>
@@ -310,9 +323,12 @@ const RidesSearch = () => {
                   Search Ride
                 </Button>
               </Stack>
-              <Text fontSize={'lg'} color="red">
+              <Stack alignItems={'center'}>
+              <Text fontSize={'md'} color="red">
                 {msg}
               </Text>
+              </Stack>
+            
             </form>
             <Stack spacing={10}></Stack>
           </Stack>

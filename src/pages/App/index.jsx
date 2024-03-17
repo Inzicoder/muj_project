@@ -20,7 +20,7 @@ function App() {
           <Flex p={8} flex={1} align={'center'} justify={'center'}>
             <Stack spacing={6} w={'full'} maxW={'lg'}>
               <Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}>
-                <Text
+                {/* <Text
                   as={'span'}
                   position={'relative'}
                   _after={{
@@ -34,7 +34,7 @@ function App() {
                   }}
                 >
                   Manipal University Jaipur
-                </Text>
+                </Text> */}
                 <br />{' '}
                 <Text color={'orange.400'} as={'span'}>
                   Travel Buddy

@@ -7,11 +7,10 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 const RideCard = props => {
+  console.log(props,'dataaaa')
   const rideID = props.rideID;
   const requestStatus = props.requestStatus;
   const [rideDetails, setRideDetails] = useState({});
-  const [publisher, setPublisher] = useState({});
-
 
   const statusColors = {
     pending: 'orange.200',
@@ -21,18 +20,14 @@ const RideCard = props => {
 
   useEffect(() => {
     try {
-      axios
-        .get(
-          `https://muj-travel-buddy.onrender.com/rides/${rideID}`
-        )
-        .then(response => {
-          console.log(response,'response')
-          setRideDetails(response.data);
-          setPublisher(response.data.publisher);
-        });
+      axios.get(`https://muj-backend.onrender.com/rides/all`).then(response => {
+        // console.log(response?.data, 'response');
+        setRideDetails(response?.data?.rides);
+        // setPublisher(response.data.publisher);
+      });
     } catch (err) {
       console.log('Error occured ');
-      console.log(err);
+      console.log(err, 'error in request');
     }
   }, []);
 
@@ -44,6 +39,9 @@ const RideCard = props => {
     const dummyMail = rideDetails.publisher.email;
     window.open(`mailto:${dummyMail}`);
   };
+
+
+
   return (
     <FadeInUp>
       <Card
@@ -58,71 +56,24 @@ const RideCard = props => {
         bg={'white'}
         position="relative"
       >
-        <SimpleGrid columns={[1, 2, 3, 4, 5, 6]} spacing={'40px'}>
-          <Box
-            w="100%"
-            bgColor={statusColors[requestStatus]}
-            textAlign={'center'}
-            verticalAlign={'middle'}
-            h={'60px'}
-            borderRadius={'50px'}
-          >
-            <Text fontWeight={600} fontSize={'2xl'}>
-              {/* {requestStatus.toUpperCase()} */}
-            </Text>
-          </Box>
-
-          <Box
-            w="100%"
-            textAlign={'center'}
-            verticalAlign={'middle'}
-            h={'60px'}
-            borderRadius={'50px'}
-          >
-            <Text fontWeight={600} fontSize={'2xl'}>
-              {rideDetails.from_location}
-            </Text>
-          </Box>
-          <Box
-            w="100%"
-            textAlign={'center'}
-            verticalAlign={'middle'}
-            h={'60px'}
-            borderRadius={'50px'}
-          >
-            <Text fontWeight={600} fontSize={'2xl'}>
-              {rideDetails.to_location}
-            </Text>
-          </Box>
-          <Box w="100%" textAlign={'center'}>
-            <Text fontWeight={600} fontSize={'xl'}>
-              Date On
-            </Text>
-              {rideDetails.doj}
-          </Box>
-          <Box w="100%" textAlign={'center'}>
-            <b>Price</b>
-            <br />
-            Rs. {rideDetails.price}
-          </Box>
-
-          <Box align={'center'}>
-            {requestStatus == 'accepted' ? (
-              <div>
-                <Button onClick={callNum}>Call</Button>
-
-                <Button onClick={callEmail} ml={'1rem'}>
-                  Email
-                </Button>
-              </div>
-            ) : (
-              <Box>
-                <Text fontWeight={'700'}>Ride By</Text>
-                {publisher.fname} {publisher.lname}
-              </Box>
-            )}
-          </Box>
-        </SimpleGrid>
+<SimpleGrid columns={[1, 2, 2, 2, 4, 6]} spacing="40px">
+    <Box>
+      <Text fontWeight={600} fontSize="xl">From</Text>
+      <Text>{props.from}</Text>
+    </Box>
+    <Box>
+      <Text fontWeight={600} fontSize="xl">To</Text>
+      <Text>{props.to}</Text>
+    </Box>
+    <Box>
+      <Text fontWeight={600} fontSize="md">Date of Journey</Text>
+      <Text>{props.doj}</Text>
+    </Box>
+    <Box>
+      <Text fontWeight={600}>Price</Text>
+      <Text>Rs. {props.price}</Text>
+    </Box>
+  </SimpleGrid>
       </Card>
     </FadeInUp>
   );

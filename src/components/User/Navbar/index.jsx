@@ -22,6 +22,7 @@ import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
+
 var name="";
 var x = localStorage.getItem('tokenID');
 if(x){
@@ -64,7 +65,7 @@ export default function Navbar() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>
+            <Box cursor={'pointer'}>
               <Text fontWeight={'bold'}>Travel Buddy</Text>
             </Box>
             <HStack

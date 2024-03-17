@@ -1,47 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleApiWrapper, Map, Marker, InfoWindow } from 'google-maps-react';
+import {
+  Map,
+  GoogleApiWrapper,
+  Marker,
+  InfoWindow,
+  Polyline,
+} from 'google-maps-react';
 import { useParams } from 'react-router-dom';
 
 const LiveTracking = props => {
   const { google } = props;
   const { fromLat, fromLng, toLat, toLng } = useParams();
   const [initialCenterAddress, setInitialCenterAddress] = useState({
-    lat: parseFloat(fromLat),
-    lng: parseFloat(fromLng),
+    lat: fromLat,
+    lng: fromLng,
   });
   const [destinationAddress, setDestinationAddress] = useState({
-    lat: parseFloat(toLat),
-    lng: parseFloat(toLng),
+    lat: toLat,
+    lng: toLng,
   });
   const [activeMarker, setActiveMarker] = useState(null);
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [mapBounds, setMapBounds] = useState(null);
   const [map, setMap] = useState(null);
-  const [directionsRenderer, setDirectionsRenderer] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(14); // Initial zoom level
 
   useEffect(() => {
     const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer({
-      suppressMarkers: true,
-    });
-
-    setDirectionsRenderer(directionsRenderer);
-
     directionsService.route(
       {
-        origin: initialCenterAddress,
-        destination: destinationAddress,
+        origin: new google.maps.LatLng(
+          initialCenterAddress.lat,
+          initialCenterAddress.lng
+        ),
+        destination: new google.maps.LatLng(
+          destinationAddress.lat,
+          destinationAddress.lng
+        ),
         travelMode: google.maps.TravelMode.DRIVING,
       },
       (result, status) => {
+        console.log(result);
         if (status === google.maps.DirectionsStatus.OK) {
           const route = result.routes[0].overview_path;
           setRouteCoordinates(route);
           const bounds = new google.maps.LatLngBounds();
           route.forEach(point => bounds.extend(point));
           setMapBounds(bounds);
-          directionsRenderer.setDirections(result);
         } else {
           console.error(`Error fetching directions: ${status}`);
         }
@@ -59,21 +65,32 @@ const LiveTracking = props => {
   };
 
   const handleMapReady = (mapProps, map) => {
-    if (map && typeof setMap === 'function') {
-      setMap(map);
-      directionsRenderer.setMap(map);
+    setMap(map);
+  };
+
+  const handleZoomChanged = () => {
+    if (map) {
+      setZoomLevel(map.getZoom());
     }
   };
+
+  useEffect(() => {
+    if (map) {
+      const trafficLayer = new google.maps.TrafficLayer();
+      trafficLayer.setMap(map);
+    }
+  }, [map, google]);
 
   return (
     <Map
       google={google}
-      zoom={11}
+      zoom={zoomLevel}
       center={mapBounds && mapBounds.getCenter()}
       initialCenter={initialCenterAddress}
       fullscreenControl={false}
       mapTypeControl={false}
       onReady={handleMapReady}
+      onZoomChanged={handleZoomChanged}
     >
       <Marker position={initialCenterAddress} onClick={onMarkerClick} />
       <Marker position={destinationAddress} onClick={onMarkerClick} />
@@ -87,6 +104,25 @@ const LiveTracking = props => {
           <p>Additional information about the marker</p>
         </div>
       </InfoWindow>
+      {console.log('routeCoordinates', routeCoordinates)}
+      {routeCoordinates.length > 0 && (
+        <Polyline
+          path={routeCoordinates}
+          strokeColor="#0080ff" // Blue color
+          strokeOpacity={0.7}
+          strokeWeight={6} // Thicker line
+          icons={[
+            {
+              icon: {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 2, // Size of the arrow
+              },
+              offset: '50%', // Show the arrow at the middle of the line
+              repeat: '100px', // Repeat the arrow every 100 pixels
+            },
+          ]}
+        />
+      )}
     </Map>
   );
 };
