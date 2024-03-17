@@ -44,8 +44,6 @@ const RidesSearch = () => {
 
 
   useEffect(() => {
-
-   
     if (window.google) {
       setService(new window.google.maps.places.AutocompleteService());
     }
@@ -55,7 +53,7 @@ const RidesSearch = () => {
     setFrom(e.target.value);
     const value = e.target.value;
 
-    console.log(service,'service')
+    console.log(service, 'service');
 
     if (service) {
       service.getPlacePredictions({ input: value }, results => {
@@ -115,24 +113,7 @@ const RidesSearch = () => {
   const handlePriceChange = e => setPrice(e.target.value);
   const handleSubmit = async event => {
     event.preventDefault();
-    // try {
 
-    //   console.log(from,to,price)
-    //   let dat = await axios.get(
-    //     `https://muj-backend.onrender.com/rides/${from}/${to}/${price}`,
-
-    //   );
-    //   console.log(dat.data,"dataHere");
-    //   setAllRides(dat.data.rides);
-    //   if (dat.status === 200) {
-    //     setLoad(false);
-    //     setmsg('Scroll to view rides');
-    //   } else {
-    //     setmsg("Couldn't find rides");
-    //   }
-    // } catch (err) {
-    //   console.log(err,"error in search ride");
-    // }
     setLoad(true);
     await axios
       .get(`https://muj-backend.onrender.com/rides/${from}/${to}/${price}`)
@@ -140,10 +121,12 @@ const RidesSearch = () => {
         console.log(response, 'response of search');
         setLoad(false);
         if (response.data.success) {
-          setmsg('Scroll to view rides');
-          navigate(
-            `/live/track/${dropLocationLatLng.lat}/${dropLocationLatLng.lng}/${destLatLng.lat}/${destLatLng.lng}`
-          );
+          setAllRides(response.data.rides)
+          // setmsg('Scroll to view rides');
+
+          // navigate(
+          //   `/live/track/${dropLocationLatLng.lat}/${dropLocationLatLng.lng}/${destLatLng.lat}/${destLatLng.lng}`
+          // );
         } else {
           setmsg("Couldn't find rides");
         }
@@ -157,6 +140,8 @@ const RidesSearch = () => {
         }
       });
   };
+
+
 
   return (
     <ChakraProvider theme={theme}>
@@ -174,140 +159,132 @@ const RidesSearch = () => {
           <Stack spacing={4}>
             <form onSubmit={handleSubmit}>
               <FormControl id="publish_ride">
-         
-                  <FormLabel>From</FormLabel>
-                  <Input
+                <FormLabel>From</FormLabel>
+                <Input
                   value={from}
-                    placeholder={'Enter a pick-up point'}
-                    id="from"
-                    type="text"
-                    value={from}
-                    onChange={handleFromChange}
-                  />
+                  placeholder={'Enter a pick-up point'}
+                  id="from"
+                  type="text"
+                  value={from}
+                  onChange={handleFromChange}
+                />
                 {dropPredictions.length > 0 && (
-                      <Box
-                        position="relative"
-                        zIndex={1} // Ensure that this dropdown is above the other
-                      >
-                 
-                        <Box
-                          as="ul"
-                          pos="absolute"
-                          mt="2"
-                          w="full"
-                          maxW="26rem"
-                          bg="white"
-                          border="1px"
-                          borderColor="gray.300"
-                          rounded="lg"
-                          shadow="lg"
-                          divideY="1px"
-                          divideColor="gray.300"
-                        >
-                          <List>
-                            {dropPredictions.map(prediction => (
-                              <ListItem
-                                key={prediction.place_id}
-                                px="4"
-                                py="2"
-                                _hover={{
-                                  bg: 'gray.100',
-                                  cursor: 'pointer',
-                                  transition:
-                                    'background-color 0.3s ease-in-out',
-                                }}
-                                onClick={() => dropLocationHandler(prediction)}
-                                display="flex"
-                                alignItems="center"
-                                borderBottom="1px"
-                                borderBottomColor="gray.200"
-                              >
-                                <Text color="gray.800" isTruncated>
-                                  {prediction.description}
-                                </Text>
-                              </ListItem>
-                            ))}
-                          </List>
-                        </Box>
-                      </Box>
-                    )}
+                  <Box
+                    position="relative"
+                    zIndex={1} // Ensure that this dropdown is above the other
+                  >
+                    <Box
+                      as="ul"
+                      pos="absolute"
+                      mt="2"
+                      w="full"
+                      maxW="26rem"
+                      bg="white"
+                      border="1px"
+                      borderColor="gray.300"
+                      rounded="lg"
+                      shadow="lg"
+                      divideY="1px"
+                      divideColor="gray.300"
+                    >
+                      <List>
+                        {dropPredictions.map(prediction => (
+                          <ListItem
+                            key={prediction.place_id}
+                            px="4"
+                            py="2"
+                            _hover={{
+                              bg: 'gray.100',
+                              cursor: 'pointer',
+                              transition: 'background-color 0.3s ease-in-out',
+                            }}
+                            onClick={() => dropLocationHandler(prediction)}
+                            display="flex"
+                            alignItems="center"
+                            borderBottom="1px"
+                            borderBottomColor="gray.200"
+                          >
+                            <Text color="gray.800" isTruncated>
+                              {prediction.description}
+                            </Text>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Box>
+                  </Box>
+                )}
 
-                  <FormLabel>To</FormLabel>
-                  <Input
+                <FormLabel>To</FormLabel>
+                <Input
                   value={to}
-                    placeholder={'Enter a drop point'}
-                    id="to"
-                    type="text"
-                    onChange={handleToChange}
-                  />
+                  placeholder={'Enter a drop point'}
+                  id="to"
+                  type="text"
+                  onChange={handleToChange}
+                />
 
-{destPredictions.length > 0 && (
-                      <Box
-                        position="relative"
-                        zIndex={1} 
-                      >
-                        <Box
-                          as="ul"
-                          pos="absolute"
-                          mt="2"
-                          w="full"
-                          maxW="26rem"
-                          bg="white"
-                          border="1px"
-                          borderColor="gray.300"
-                          rounded="lg"
-                          shadow="lg"
-                          divideY="1px"
-                          divideColor="gray.300"
-                        >
-                          <List>
-                            {destPredictions.map(prediction => (
-                              <ListItem
-                                key={prediction.place_id}
-                                px="4"
-                                py="2"
-                                _hover={{
-                                  bg: 'gray.100',
-                                  cursor: 'pointer',
-                                  transition:
-                                    'background-color 0.3s ease-in-out',
-                                }}
-                                onClick={() => destLocationHandler(prediction)}
-                                display="flex"
-                                alignItems="center"
-                                borderBottom="1px"
-                                borderBottomColor="gray.200"
-                              >
-                                <Text color="gray.800" isTruncated>
-                                  {prediction.description}
-                                </Text>
-                              </ListItem>
-                            ))}
-                          </List>
-                        </Box>
-                      </Box>
-                    )}
-    
-                <br />
-    
-                  <FormLabel>Date of Journey</FormLabel>
-                  <Input
-                    placeholder={'Date of Journey'}
-                    id="doj"
-                    type="date"
-                    onChange={handleDojChange}
-                  />
-             
+                {destPredictions.length > 0 && (
+                  <Box position="relative" zIndex={1}>
+                    <Box
+                      as="ul"
+                      pos="absolute"
+                      mt="2"
+                      w="full"
+                      maxW="26rem"
+                      bg="white"
+                      border="1px"
+                      borderColor="gray.300"
+                      rounded="lg"
+                      shadow="lg"
+                      divideY="1px"
+                      divideColor="gray.300"
+                    >
+                      <List>
+                        {destPredictions.map(prediction => (
+                          <ListItem
+                            key={prediction.place_id}
+                            px="4"
+                            py="2"
+                            _hover={{
+                              bg: 'gray.100',
+                              cursor: 'pointer',
+                              transition: 'background-color 0.3s ease-in-out',
+                            }}
+                            onClick={() => destLocationHandler(prediction)}
+                            display="flex"
+                            alignItems="center"
+                            borderBottom="1px"
+                            borderBottomColor="gray.200"
+                          >
+                            <Text color="gray.800" isTruncated>
+                              {prediction.description}
+                            </Text>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Box>
+                  </Box>
+                )}
+
                 <br />
 
-                  <FormLabel>Price per head</FormLabel>
-                  <Input
-                    placeholder={'Price per head'}
-                    id="price"
-                    type="text"
-                    onChange={handlePriceChange}
-                  />
-     
+                <FormLabel>Date of Journey</FormLabel>
+                <Input
+                  placeholder={'Date of Journey'}
+                  id="doj"
+                  type="date"
+                  onChange={handleDojChange}
+                />
+
+                <br />
+
+                <FormLabel>Price per head</FormLabel>
+                <Input
+                  placeholder={'Price per head'}
+                  id="price"
+                  type="text"
+                  onChange={handlePriceChange}
+                />
               </FormControl>
               <br />
               <Stack spacing={10}>
@@ -324,11 +301,10 @@ const RidesSearch = () => {
                 </Button>
               </Stack>
               <Stack alignItems={'center'}>
-              <Text fontSize={'md'} color="red">
-                {msg}
-              </Text>
+                <Text fontSize={'md'} color="red">
+                  {msg}
+                </Text>
               </Stack>
-            
             </form>
             <Stack spacing={10}></Stack>
           </Stack>
@@ -347,8 +323,9 @@ const RidesSearch = () => {
               nop={res.no_of_pass}
               price={res.price}
               rideID={res._id}
-              // pid={res.publisher_id}
               publisher={res.PublisherID}
+              dropLocationLatLng={dropLocationLatLng}
+              destLatLng={destLatLng}
             />
           ) : null
         )}
@@ -362,4 +339,3 @@ const RidesSearch = () => {
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyBdc7TPydN4945Q-91KC7ndiczXdkqaPKo',
 })(RidesSearch);
-
