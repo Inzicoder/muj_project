@@ -19,35 +19,30 @@ function App() {
     <ChakraProvider theme={theme}>
       <FadeInUp>
         <Stack minH={'80vh'} direction={{ base: 'column', md: 'row' }}>
-          <Flex p={8} flex={1} align={'center'} justify={'center'}>
-            <Stack spacing={6} w={'full'} maxW={'lg'}>
+          <Flex
+            p={8}
+            flex={1}
+            align={'center'}
+            justify={'center'}
+            ml={{ base: 0, md: 8 }}
+          >
+            <Stack spacing={6} w={'full'} maxW={'lg'} textAlign="left">
               <Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}>
-                {/* <Text
-                  as={'span'}
-                  position={'relative'}
-                  _after={{
-                    content: "''",
-                    width: 'full',
-                    position: 'absolute',
-                    bottom: 1,
-                    left: 0,
-                    bg: 'blue.400',
-                    zIndex: -1,
-                  }}
-                >
-                  Manipal University Jaipur
-                </Text> */}
-                <br />{' '}
                 <Text color={'orange.400'} as={'span'}>
                   Travel Buddy
-                </Text>{' '}
+                </Text>
               </Heading>
-              <Text fontSize={{ base: 'md', lg: 'lg' }} color={'gray.500'}>
-                This platform is an exclusive resource for the people of
-                college. It provides an easy and accessible way to pool vehicles
-                and get co-passengers for the go.
+              <Text
+                fontSize={{ base: 'md', lg: 'lg' }}
+                color={'gray.500'}
+              >
+                This platform is an exclusive resource for the people of college. It provides an easy and accessible way to pool vehicles and get co-passengers for the go.
               </Text>
-              <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
+              <Stack
+                direction={{ base: 'column', md: 'row' }}
+                spacing={4}
+                justify="left"
+              >
                 <Link href="/user/login">
                   <Button
                     rounded={'full'}
@@ -61,26 +56,35 @@ function App() {
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button rounded={'full'}>Sign-Up</Button>
+                  <Button
+                    rounded={'full'}
+                    variant={'outline'}
+                    borderColor={'orange.400'}
+                    color={'orange.400'}
+                  >
+                    Sign-Up
+                  </Button>
                 </Link>
               </Stack>
             </Stack>
+
           </Flex>
-          <Flex flex={0.9}>
+          <Flex
+            flex={1}
+            justify={'center'}
+            align={'center'}
+            mr={{ base: 0, md: 8 }}
+          >
             <Image
               alt="MUJ-IMAGE"
-              objectFit="cover"
+              objectFit="contain"
               src={muj_image}
-              style={{
-                height:'400px',
-                width:'400px'
-              }}
-           
+              boxSize={{ base: '150px', md: '600px' }}
+              borderRadius={'md'}
             />
           </Flex>
         </Stack>
       </FadeInUp>
-      <Footer />
     </ChakraProvider>
   );
 }
