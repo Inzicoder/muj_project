@@ -395,6 +395,8 @@ function PublishRide() {
   );
 }
 
+// add ur api key
+
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBdc7TPydN4945Q-91KC7ndiczXdkqaPKo',
+  apiKey: '',
 })(PublishRide);
