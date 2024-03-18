@@ -89,6 +89,7 @@ export default function Navbar() {
             >
               Publish Ride
             </Button>
+            <h1 style={{marginRight : "20px"}}>{localStorage.getItem("userName")}</h1>
             <Menu>
               <MenuButton
                 as={Button}

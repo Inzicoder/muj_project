@@ -57,6 +57,7 @@ export default function Login() {
         setStatus('Signin successful');
         localStorage.setItem('UID', UID);
         localStorage.setItem('userRole', dat.data?.user?.user_type);
+        localStorage.setItem('userName', `${dat.data?.user?.fname} ${dat.data?.user?.lname}`);
         setTimeout(() => {
           navigate('/user/dashboard/publish');
         }, 1000);
